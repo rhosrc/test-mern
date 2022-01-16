@@ -38,7 +38,8 @@ db.on('disconnected', function () {
 const CheeseSchema = new mongoose.Schema({
     name: String,
     countryOfOrigin: String,
-    image: String
+    image: String,
+    googleId: String
 });
 
 const Cheese = mongoose.model('Cheese', CheeseSchema);
@@ -60,8 +61,9 @@ app.get('/', function (req, res) {
 
 // Index
 app.get('/cheeses', async function (req, res) {
+    // you need to send a Web token to the back end.
     try {
-        res.json(await Cheese.find({}))
+        res.json(await Cheese.find({googleId: req.query.uid}))
     } catch (error) {
         res.status(400).json(error)
     }
